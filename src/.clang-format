@@ -1,0 +1,14 @@
+BasedOnStyle: llvm
+IndentWidth: 4          # Set the indentation level to 4 spaces (common in Allman style)
+UseTab: Never           # Use spaces instead of tabs
+AllowShortIfStatementsOnASingleLine: false
+BreakBeforeBraces: Allman
+ColumnLimit: 80         # Wrap lines after 80 characters, adjust if needed
+AllowShortFunctionsOnASingleLine: None
+SpaceBeforeParens: ControlStatements  # Space before parentheses in control statements
+AlignConsecutiveAssignments: true     # Align assignments for readability
+AlignConsecutiveDeclarations: true    # Align variable declarations for readability
+AlignTrailingComments: true           # Align trailing comments
+
+# Optional, but often useful with Allman
+IndentCaseLabels: true   # Indent `case` labels in `switch` statements
