@@ -19,7 +19,7 @@ BestFirstSelection::select_reproduce(const std::vector<Path>   &paths,
 
     size_t curr_reproduction_index = 0;
 
-    while (!eliminated_lookup[curr_reproduction_index])
+    while (eliminated_lookup[curr_reproduction_index])
     {
         curr_reproduction_index++;
     }
@@ -28,7 +28,7 @@ BestFirstSelection::select_reproduce(const std::vector<Path>   &paths,
     {
         ele = curr_reproduction_index;
 
-        while (!eliminated_lookup[++curr_reproduction_index])
+        while (eliminated_lookup[++curr_reproduction_index])
         {
         }
     }
