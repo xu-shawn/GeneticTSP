@@ -16,7 +16,7 @@ namespace GeneticTSP
 Path::Path(const Graph &graph)
 {
     path.resize(graph.adjacency_matrix.size());
-    std::iota(path.begin(), path.end(), 0);
+    std::iota(std::begin(path), std::end(path), 0);
 
     weights.resize(path.size() - 1);
 

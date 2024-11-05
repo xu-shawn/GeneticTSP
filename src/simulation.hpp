@@ -65,7 +65,7 @@ Simulation<simulation_size>::Simulation(Graph graph_, std::random_device device)
       paths(make_array<simulation_size>(Path(graph_))), graph(graph_)
 {
     std::vector<size_t> path_data(graph.adjacency_matrix.size());
-    std::iota(path_data.begin(), path_data.end(), 0);
+    std::iota(std::begin(path_data), std::end(path_data), 0);
 
     for (Path &path : paths)
     {
@@ -76,7 +76,7 @@ Simulation<simulation_size>::Simulation(Graph graph_, std::random_device device)
 
 template <size_t simulation_size> void Simulation<simulation_size>::sort()
 {
-    std::sort(paths.begin(), paths.end());
+    std::sort(std::begin(paths), std::end(paths));
 }
 
 template <size_t simulation_size>
