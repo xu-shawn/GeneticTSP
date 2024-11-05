@@ -2,10 +2,13 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <random>
 
 #include "parse.hpp"
+#include "selector.hpp"
 #include "simulation.hpp"
+#include "terminator.hpp"
 
 using namespace GeneticTSP;
 
@@ -22,9 +25,11 @@ int main(int argc, char *argv[])
 
     std::ofstream file_output("best_path.txt");
 
-    Simulation<1024> simulation(
-        graph_from_coordinates(parse_coordinates(file_input)),
-        std::random_device{});
+    Simulation simulation(
+        graph_from_coordinates(parse_coordinates(file_input)), 128,
+        std::random_device(),
+        std::make_unique<FitnessProbablistic>(std::random_device()),
+        std::make_unique<BestFirstSelection>());
 
     int last_weight = std::numeric_limits<int32_t>::max();
     int curr_weight = simulation.paths[0].total_weight();
