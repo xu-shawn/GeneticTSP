@@ -64,6 +64,14 @@ Simulation<simulation_size>::Simulation(Graph graph_, std::random_device device)
                       std::default_random_engine::result_type>(0, 100)),
       paths(make_array<simulation_size>(Path(graph_))), graph(graph_)
 {
+    std::vector<size_t> path_data(graph.adjacency_matrix.size());
+    std::iota(path_data.begin(), path_data.end(), 0);
+
+    for (Path &path : paths)
+    {
+        std::shuffle(std::begin(path_data), std::end(path_data), gen);
+        path = Path(graph, path_data);
+    }
 }
 
 template <size_t simulation_size> void Simulation<simulation_size>::sort()

@@ -14,7 +14,7 @@ class Path
 {
     using weight_type = int32_t;
 
-    weight_type              total_weight;
+    weight_type              total_weight_;
     std::vector<weight_type> weights;
 
   public:
@@ -24,11 +24,16 @@ class Path
     Path(const Graph &graph, const std::vector<size_t> &path_);
     Path(const Path &other_path);
 
-    void swap_edges(const Graph &graph, size_t edge1, size_t edge2);
+    void        swap_edges(const Graph &graph, size_t edge1, size_t edge2);
+    std::string to_string();
+    weight_type total_weight()
+    {
+        return total_weight_;
+    }
 
     bool operator<(const Path &other) const
     {
-        return total_weight < other.total_weight;
+        return total_weight_ < other.total_weight_;
     }
 };
 

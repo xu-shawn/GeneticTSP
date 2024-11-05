@@ -1,5 +1,6 @@
 #include "parse.hpp"
 
+#include <iostream>
 #include <utility>
 #include <valarray>
 #include <vector>
@@ -24,6 +25,7 @@ std::vector<coordinate_type> parse_coordinates(std::ifstream &fin)
     std::vector<coordinate_type> coordinates;
 
     int x, y;
+
     while (fin >> x >> y)
     {
         coordinates.emplace_back(x, y);

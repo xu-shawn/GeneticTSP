@@ -1,5 +1,7 @@
+#include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <random>
 
 #include "parse.hpp"
@@ -16,13 +18,33 @@ int main(int argc, char *argv[])
     }
 
     std::ifstream file_input;
-    file_input.open(argv[0]);
+    file_input.open(argv[1]);
 
-    Simulation<1000> simulation(
+    std::ofstream file_output("best_path.txt");
+
+    Simulation<1024> simulation(
         graph_from_coordinates(parse_coordinates(file_input)),
         std::random_device{});
 
-    simulation.step();
+    int last_weight = std::numeric_limits<int32_t>::max();
+    int curr_weight = simulation.paths[0].total_weight();
+
+    for (int i = 0;; i++)
+    {
+        curr_weight = simulation.paths[0].total_weight();
+
+        if (curr_weight != last_weight)
+        {
+            last_weight = curr_weight;
+            std::cout << curr_weight << std::endl;
+
+            file_output << "Epoch: " << i << ", Weight: " << curr_weight << "\n"
+                        << simulation.paths[0].to_string() << "\n"
+                        << std::endl;
+        }
+
+        simulation.step();
+    }
 
     return 0;
 }
