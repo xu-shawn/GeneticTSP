@@ -38,10 +38,10 @@ Graph graph_from_coordinates(std::vector<coordinate_type> coordinates)
 {
     Graph graph(coordinates.size());
 
-    for (int i = 0; i < coordinates.size(); i++)
+    for (size_t i = 0; i < coordinates.size(); i++)
     {
         graph.adjacency_matrix[i][i] = 0;
-        for (int j = i + 1; j < coordinates.size(); j++)
+        for (size_t j = i + 1; j < coordinates.size(); j++)
         {
             graph.adjacency_matrix[i][j] = graph.adjacency_matrix[j][i] =
                 manhattan_distance(coordinates[i], coordinates[j]);

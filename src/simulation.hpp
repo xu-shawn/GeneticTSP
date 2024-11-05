@@ -21,20 +21,16 @@ class Simulation
         rng_mutation;
 
     void sort();
-    void eliminate_and_mutate();
+    void eliminate_and_mutate(Terminator &terminator, Selector &selector);
     void mutate_path(Path &path);
 
   public:
-    std::vector<Path>           paths;
-    Graph                       graph;
-    std::unique_ptr<Terminator> terminator;
-    std::unique_ptr<Selector>   selector;
+    std::vector<Path> paths;
+    Graph             graph;
 
-    Simulation(Graph graph, size_t size, std::random_device rng_device,
-               std::unique_ptr<Terminator> &&terminator_,
-               std::unique_ptr<Selector>   &&selector_);
+    Simulation(Graph graph, size_t size, std::random_device rng_device);
 
-    void step();
+    void step(Terminator &terminator, Selector &selector);
 };
 
 } // namespace GeneticTSP

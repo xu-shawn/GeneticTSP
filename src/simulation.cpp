@@ -17,15 +17,12 @@
 namespace GeneticTSP
 {
 
-Simulation::Simulation(Graph graph_, size_t size, std::random_device device,
-                       std::unique_ptr<Terminator> &&terminator_,
-                       std::unique_ptr<Selector>   &&selector_)
+Simulation::Simulation(Graph graph_, size_t size, std::random_device device)
     : gen(std::default_random_engine{device()}),
       rng_mutation(std::uniform_int_distribution<
                    std::default_random_engine::result_type>(
           0, graph_.adjacency_matrix.size() - 1)),
-      graph(graph_), terminator(std::move(terminator_)),
-      selector(std::move(selector_))
+      graph(graph_)
 {
     std::vector<size_t> path_data(graph.adjacency_matrix.size());
     std::iota(std::begin(path_data), std::end(path_data), 0);
@@ -42,12 +39,13 @@ void Simulation::sort()
     std::sort(std::begin(paths), std::end(paths));
 }
 
-void Simulation::eliminate_and_mutate()
+void Simulation::eliminate_and_mutate(Terminator &terminator,
+                                      Selector   &selector)
 {
     std::vector<size_t> eliminated_indices =
-        terminator->generate_eliminations(this);
+        terminator.generate_eliminations(paths);
     std::vector<size_t> reproducing_indices =
-        selector->select_reproduce(paths, eliminated_indices);
+        selector.select_reproduce(paths, eliminated_indices);
 
     assert(eliminated_indices.size() == reproducing_indices.size());
 
@@ -63,9 +61,9 @@ void Simulation::mutate_path(Path &path)
     path.swap_edges(graph, rng_mutation(gen), rng_mutation(gen));
 }
 
-void Simulation::step()
+void Simulation::step(Terminator &terminator, Selector &selector)
 {
-    eliminate_and_mutate();
+    eliminate_and_mutate(terminator, selector);
     sort();
 }
 

@@ -25,11 +25,12 @@ int main(int argc, char *argv[])
 
     std::ofstream file_output("best_path.txt");
 
-    Simulation simulation(
-        graph_from_coordinates(parse_coordinates(file_input)), 128,
-        std::random_device(),
-        std::make_unique<FitnessProbablistic>(std::random_device()),
-        std::make_unique<BestFirstSelection>());
+    Simulation simulation(graph_from_coordinates(parse_coordinates(file_input)),
+                          128, std::random_device());
+
+    std::unique_ptr<Terminator> terminator =
+        std::make_unique<FitnessProbablistic>(std::random_device());
+    std::unique_ptr<Selector> selector = std::make_unique<BestFirstSelection>();
 
     int last_weight = std::numeric_limits<int32_t>::max();
     int curr_weight = simulation.paths[0].total_weight();
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
                         << std::endl;
         }
 
-        simulation.step();
+        simulation.step(*terminator, *selector);
     }
 
     return 0;

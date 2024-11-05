@@ -8,12 +8,13 @@ namespace GeneticTSP
 {
 
 class Simulation;
+class Path;
 
 struct Terminator
 {
     virtual std::vector<size_t>
-    generate_eliminations(const Simulation *sim) = 0;
-    virtual ~Terminator()                        = default;
+    generate_eliminations(const std::vector<Path> &population) = 0;
+    virtual ~Terminator()                                      = default;
 };
 
 struct FitnessProbablistic : Terminator
@@ -21,7 +22,7 @@ struct FitnessProbablistic : Terminator
     FitnessProbablistic(std::random_device &&device);
 
     virtual std::vector<size_t>
-    generate_eliminations(const Simulation *sim) final override;
+    generate_eliminations(const std::vector<Path> &population) final override;
 
   private:
     using random_engine_type = std::default_random_engine;
@@ -35,7 +36,7 @@ struct FitnessProbablistic : Terminator
 struct FitnessUniform : Terminator
 {
     virtual std::vector<size_t>
-    generate_eliminations(const Simulation *sim) final override;
+    generate_eliminations(const std::vector<Path> &population) final override;
 };
 
 } // namespace GeneticTSP

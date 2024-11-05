@@ -3,7 +3,7 @@
 #include <random>
 #include <vector>
 
-#include "simulation.hpp"
+#include "path.hpp"
 
 namespace GeneticTSP
 {
@@ -14,18 +14,18 @@ FitnessProbablistic::FitnessProbablistic(std::random_device &&device)
 }
 
 std::vector<size_t>
-FitnessProbablistic::generate_eliminations(const Simulation *sim)
+FitnessProbablistic::generate_eliminations(const std::vector<Path> &population)
 {
     std::vector<size_t> eliminated_indices;
 
-    for (size_t i = sim->paths.size() - 1; i >= sim->paths.size() / 5; i--)
+    for (size_t i = population.size() - 1; i >= population.size() / 5; i--)
     {
-        if (rng_distrib(rng_engine) < 100 * i / sim->paths.size() - 20)
+        if (rng_distrib(rng_engine) < 100 * i / population.size() - 20)
         {
             eliminated_indices.push_back(i);
         }
 
-        if (eliminated_indices.size() == sim->paths.size() / 2)
+        if (eliminated_indices.size() == population.size() / 2)
         {
             break;
         }
