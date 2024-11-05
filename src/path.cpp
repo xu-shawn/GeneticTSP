@@ -12,7 +12,7 @@
 namespace GeneticTSP
 {
 
-Path::Path(const Graph &graph) : graph(graph)
+Path::Path(const Graph &graph)
 {
     path.resize(graph.adjacency_matrix.size());
     std::iota(path.begin(), path.end(), 0);
@@ -27,8 +27,7 @@ Path::Path(const Graph &graph) : graph(graph)
     }
 }
 
-Path::Path(const Graph &graph, const std::vector<size_t> &path_)
-    : path(path_), graph(graph)
+Path::Path(const Graph &graph, const std::vector<size_t> &path_) : path(path_)
 {
     assert(path.size() == graph.adjacency_matrix.size());
 
@@ -43,12 +42,12 @@ Path::Path(const Graph &graph, const std::vector<size_t> &path_)
 }
 
 Path::Path(const Path &other_path)
-    : weights(other_path.weights), path(other_path.path),
-      total_weight(other_path.total_weight), graph(other_path.graph)
+    : total_weight(other_path.total_weight), weights(other_path.weights),
+      path(other_path.path)
 {
 }
 
-void Path::swap_edges(size_t edge1, size_t edge2)
+void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
 {
     assert(edge1 >= 0 && edge2 >= 0);
     assert(edge1 < path.size() && edge2 < path.size());

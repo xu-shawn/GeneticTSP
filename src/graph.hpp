@@ -14,6 +14,8 @@ class Graph
 
   public:
     adjacency_matrix_type adjacency_matrix;
+    Graph(adjacency_matrix_type adj_matrix);
+    Graph(size_t size);
 };
 
 } // namespace GeneticTSP

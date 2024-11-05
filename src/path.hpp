@@ -19,14 +19,12 @@ class Path
 
   public:
     std::vector<size_t> path;
-    const Graph        &graph;
 
-    Path() = delete;
     explicit Path(const Graph &graph);
     Path(const Graph &graph, const std::vector<size_t> &path_);
     Path(const Path &other_path);
 
-    void swap_edges(size_t edge1, size_t edge2);
+    void swap_edges(const Graph &graph, size_t edge1, size_t edge2);
 
     bool operator<(const Path &other) const
     {
