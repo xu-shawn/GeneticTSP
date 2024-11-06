@@ -14,7 +14,7 @@ struct Terminator
 {
     virtual std::vector<size_t>
     generate_eliminations(const std::vector<Path> &population) = 0;
-    virtual ~Terminator()                                      = default;
+    virtual ~Terminator() noexcept                             = default;
 };
 
 struct FitnessProbablistic : Terminator
@@ -33,7 +33,7 @@ struct FitnessProbablistic : Terminator
 };
 
 // https://arxiv.org/pdf/cs/0610126
-struct FitnessUniform : Terminator
+struct FitnessUniformDeletion : Terminator
 {
     virtual std::vector<size_t>
     generate_eliminations(const std::vector<Path> &population) final override;

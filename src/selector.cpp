@@ -9,8 +9,10 @@ std::vector<size_t>
 BestFirstSelection::select_reproduce(const std::vector<Path>   &paths,
                                      const std::vector<size_t> &to_delete) const
 {
-    std::vector<bool>   eliminated_lookup(paths.size(), false);
-    std::vector<size_t> to_reproduce(to_delete.size());
+    using std::size;
+
+    std::vector<bool>   eliminated_lookup(size(paths), false);
+    std::vector<size_t> to_reproduce(size(to_delete));
 
     for (const auto ele : to_delete)
     {

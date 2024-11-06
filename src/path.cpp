@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <numeric>
 #include <sstream>
+#include <string>
 #include <utility>
 
 #include "graph.hpp"
@@ -15,13 +16,15 @@ namespace GeneticTSP
 
 Path::Path(const Graph &graph)
 {
-    path.resize(graph.adjacency_matrix.size());
-    std::iota(std::begin(path), std::end(path), 0);
+    using std::begin, std::end, std::size;
 
-    weights.resize(path.size() - 1);
+    path.resize(size(graph.adjacency_matrix));
+    std::iota(begin(path), end(path), 0);
+
+    weights.resize(size(path) - 1);
 
     total_weight_ = 0;
-    for (size_t i = 0; i < path.size() - 1; i++)
+    for (size_t i = 0; i < size(path) - 1; i++)
     {
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
         total_weight_ += weights[i];
@@ -30,12 +33,14 @@ Path::Path(const Graph &graph)
 
 Path::Path(const Graph &graph, const std::vector<size_t> &path_) : path(path_)
 {
-    assert(path.size() == graph.adjacency_matrix.size());
+    using std::begin, std::end, std::size;
 
-    weights.resize(path_.size() - 1);
+    assert(size(path) == size(graph.adjacency_matrix));
+
+    weights.resize(size(path) - 1);
 
     total_weight_ = 0;
-    for (size_t i = 0; i < path.size() - 1; i++)
+    for (size_t i = 0; i < size(path) - 1; i++)
     {
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
         total_weight_ += weights[i];
@@ -50,8 +55,10 @@ Path::Path(const Path &other_path)
 
 void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
 {
+    using std::size;
+
     assert(edge1 >= 0 && edge2 >= 0);
-    assert(edge1 < path.size() && edge2 < path.size());
+    assert(edge1 < size(path) && edge2 < size(path));
 
     if (edge1 == edge2)
         return;
@@ -59,7 +66,7 @@ void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
     std::swap(path[edge1], path[edge2]);
 
     for (size_t i = std::max<size_t>(edge1 - 1, 0);
-         i < std::min<size_t>(edge1, path.size() - 2); i++)
+         i < std::min<size_t>(edge1, size(path) - 2); i++)
     {
         total_weight_ -= weights[i];
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
@@ -67,7 +74,7 @@ void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
     }
 
     for (size_t i = std::max<size_t>(edge2 - 1, 0);
-         i < std::min<size_t>(edge2, path.size() - 2); i++)
+         i < std::min<size_t>(edge2, size(path) - 2); i++)
     {
         total_weight_ -= weights[i];
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
@@ -77,13 +84,15 @@ void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
 
 std::string Path::to_string()
 {
+    using std::size;
+
     std::stringstream ss;
 
-    for (int i = 0; i < path.size(); i++)
+    for (int i = 0; i < size(path); i++)
     {
         ss << path[i];
 
-        if (i != path.size() - 1)
+        if (i != size(path) - 1)
         {
             ss << "->";
         }

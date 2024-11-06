@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace GeneticTSP
@@ -26,7 +27,7 @@ class Path
 
     void        swap_edges(const Graph &graph, size_t edge1, size_t edge2);
     std::string to_string();
-    weight_type total_weight()
+    weight_type total_weight() const
     {
         return total_weight_;
     }
