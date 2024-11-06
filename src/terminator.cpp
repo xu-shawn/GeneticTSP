@@ -15,8 +15,8 @@
 namespace GeneticTSP
 {
 
-FitnessProbablistic::FitnessProbablistic(std::random_device &&device)
-    : rng_engine{std::move(device())}, rng_distrib{0, 100}
+FitnessProbablistic::FitnessProbablistic(std::random_device &device)
+    : rng_engine(device()), rng_distrib{0, 100}
 {
 }
 

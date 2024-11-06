@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
             last_weight = curr_weight;
             std::cout << curr_weight << std::endl;
 
-            file_output << "Epoch: " << i << ", Weight: " << curr_weight << "\n"
+            file_output << "Generation: " << i << ", Weight: " << curr_weight
+                        << "\n"
                         << simulation.paths[0].to_string() << "\n"
                         << std::endl;
         }

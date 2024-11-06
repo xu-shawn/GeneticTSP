@@ -13,8 +13,10 @@ class Graph;
 
 class Path
 {
+  public:
     using weight_type = int32_t;
 
+  private:
     weight_type              total_weight_;
     std::vector<weight_type> weights;
 

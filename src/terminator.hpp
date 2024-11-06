@@ -19,7 +19,7 @@ struct Terminator
 
 struct FitnessProbablistic : Terminator
 {
-    FitnessProbablistic(std::random_device &&device);
+    FitnessProbablistic(std::random_device &device);
 
     virtual std::vector<size_t>
     generate_eliminations(const std::vector<Path> &population) final override;
