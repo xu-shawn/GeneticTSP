@@ -27,7 +27,7 @@ struct BestFirstSelection : Selector
 // https://arxiv.org/pdf/cs/0610126
 struct FitnessUniformSelection : Selector
 {
-    FitnessUniformSelection(std::random_device &device);
+    FitnessUniformSelection(std::random_device::result_type seed);
 
     virtual std::vector<size_t>
     select_reproduce(const std::vector<Path>   &paths,

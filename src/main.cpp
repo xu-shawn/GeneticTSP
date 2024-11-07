@@ -28,9 +28,15 @@ int main(int argc, char *argv[])
     Simulation simulation(graph_from_coordinates(parse_coordinates(file_input)),
                           128, std::random_device());
 
-    std::unique_ptr<Terminator> terminator =
-        std::make_unique<FitnessProbablistic>(std::random_device());
-    std::unique_ptr<Selector> selector = std::make_unique<BestFirstSelection>();
+    std::unique_ptr<Terminator> terminator_fpd =
+        std::make_unique<FitnessProbablisticDeletion>(std::random_device()());
+    std::unique_ptr<Selector> selector_bfs =
+        std::make_unique<BestFirstSelection>();
+
+    std::unique_ptr<Terminator> terminator_FUSS =
+        std::make_unique<FitnessUniformDeletion>();
+    std::unique_ptr<Selector> selector_FUSS =
+        std::make_unique<FitnessUniformSelection>(std::random_device()());
 
     int last_weight = std::numeric_limits<int32_t>::max();
     int curr_weight = simulation.paths[0].total_weight();
@@ -50,7 +56,7 @@ int main(int argc, char *argv[])
                         << std::endl;
         }
 
-        simulation.step(*terminator, *selector);
+        simulation.step(*terminator_FUSS, *selector_FUSS);
     }
 
     return 0;

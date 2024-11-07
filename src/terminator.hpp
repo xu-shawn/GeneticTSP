@@ -17,9 +17,9 @@ struct Terminator
     virtual ~Terminator() noexcept                             = default;
 };
 
-struct FitnessProbablistic : Terminator
+struct FitnessProbablisticDeletion : Terminator
 {
-    FitnessProbablistic(std::random_device &device);
+    FitnessProbablisticDeletion(std::random_device::result_type seed);
 
     virtual std::vector<size_t>
     generate_eliminations(const std::vector<Path> &population) final override;

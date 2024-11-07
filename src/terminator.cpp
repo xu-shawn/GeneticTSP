@@ -15,12 +15,13 @@
 namespace GeneticTSP
 {
 
-FitnessProbablistic::FitnessProbablistic(std::random_device &device)
-    : rng_engine(device()), rng_distrib{0, 100}
+FitnessProbablisticDeletion::FitnessProbablisticDeletion(
+    std::random_device::result_type seed)
+    : rng_engine(seed), rng_distrib{0, 100}
 {
 }
 
-std::vector<size_t> FitnessProbablistic::generate_eliminations(
+std::vector<size_t> FitnessProbablisticDeletion::generate_eliminations(
     const std::vector<Path> &ordered_population)
 {
     using std::size;

@@ -43,8 +43,9 @@ BestFirstSelection::select_reproduce(const std::vector<Path>   &paths,
     return to_reproduce;
 }
 
-FitnessUniformSelection::FitnessUniformSelection(std::random_device &device)
-    : rng_engine(device())
+FitnessUniformSelection::FitnessUniformSelection(
+    std::random_device::result_type seed)
+    : rng_engine(seed)
 {
 }
 
