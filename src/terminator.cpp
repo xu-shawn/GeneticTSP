@@ -1,11 +1,12 @@
 #include "terminator.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstddef>
+#include <functional>
 #include <iterator>
 #include <random>
-#include <set>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -53,7 +54,7 @@ std::vector<size_t> FitnessUniformDeletion::generate_eliminations(
     const size_t num_levels = static_cast<int>(std::sqrt(size(population)));
 
     std::vector<std::unordered_set<size_t>> fitness_levels(num_levels);
-    std::vector<std::pair<size_t, size_t>>  fitness_count;
+    std::vector<std::pair<size_t, size_t>>  fitness_count(num_levels);
     std::vector<size_t> fitness_partial_difference(num_levels);
 
     const auto [min_path, max_path] =
@@ -72,10 +73,10 @@ std::vector<size_t> FitnessUniformDeletion::generate_eliminations(
 
     for (size_t i = 0; i < size(fitness_levels); i++)
     {
-        fitness_count.emplace_back(size(fitness_levels[i]), i);
+        fitness_count[i] = std::make_pair(size(fitness_levels[i]), i);
     }
 
-    std::sort(begin(fitness_count), end(fitness_count));
+    std::sort(begin(fitness_count), end(fitness_count), std::greater{});
 
     for (size_t i = 0; i + 1 < size(fitness_levels); i++)
     {
@@ -87,6 +88,7 @@ std::vector<size_t> FitnessUniformDeletion::generate_eliminations(
 
     size_t sum_deleted = 0;
     size_t delete_to   = 0;
+
     while (sum_deleted < size(population) / 3 &&
            delete_to < size(fitness_partial_difference) - 1)
     {
@@ -96,17 +98,20 @@ std::vector<size_t> FitnessUniformDeletion::generate_eliminations(
 
     std::vector<size_t> to_delete;
 
-    for (size_t i = 0; i <= delete_to; i++)
+    for (size_t i = 0; i < delete_to; i++)
     {
+        auto &curr_fitness_rank = fitness_levels[fitness_count[i].second];
+
         for (size_t j = 0;
              j < fitness_count[i].first - fitness_count[delete_to].first; j++)
         {
-            auto &curr_fitness_rank = fitness_levels[fitness_count[i].second];
-            auto  selected_element  = begin(curr_fitness_rank);
+            auto selected_element = begin(curr_fitness_rank);
             to_delete.push_back(*selected_element);
             curr_fitness_rank.erase(selected_element);
         }
     }
+
+    assert(sum_deleted == size(to_delete));
 
     return to_delete;
 }

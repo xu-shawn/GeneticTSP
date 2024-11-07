@@ -1,6 +1,7 @@
 #include "selector.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <random>
 #include <utility>
 #include <vector>
@@ -58,7 +59,7 @@ FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
     std::vector<std::pair<Path::weight_type, size_t>> survivor_data(
         size(paths) - size(to_delete));
     std::vector<bool>   deleted_lookup(size(paths), false);
-    std::vector<size_t> to_reproduce;
+    std::vector<size_t> to_reproduce(size(to_delete));
 
     for (const auto ele : to_delete)
     {
@@ -92,8 +93,19 @@ FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
         const auto found_upper_bound =
             std::upper_bound(begin(survivor_data), end(survivor_data), to_find);
 
-        if (to_find.first - found_lower_bound->first >
-            found_upper_bound->first - to_find.first)
+        assert(found_lower_bound != survivor_data.end() ||
+               found_upper_bound != survivor_data.end());
+
+        if (found_lower_bound == survivor_data.end())
+        {
+            to_reproduce[i] = found_upper_bound->second;
+        }
+        else if (found_upper_bound == survivor_data.begin())
+        {
+            to_reproduce[i] = found_lower_bound->second;
+        }
+        else if (to_find.first - found_lower_bound->first >
+                 found_upper_bound->first - to_find.first)
         {
             to_reproduce[i] = found_upper_bound->second;
         }

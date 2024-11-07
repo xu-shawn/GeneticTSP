@@ -17,12 +17,10 @@
 namespace GeneticTSP
 {
 
-Simulation::Simulation(Graph graph_, size_t sim_size, std::random_device device)
-    : gen(std::default_random_engine{device()}),
-      rng_mutation(std::uniform_int_distribution<
-                   std::default_random_engine::result_type>(
-          0, std::size(graph_.adjacency_matrix) - 1)),
-      graph(graph_)
+Simulation::Simulation(Graph graph_, size_t sim_size,
+                       std::default_random_engine::result_type seed)
+    : gen(std::default_random_engine(seed)),
+      rng_mutation(0, std::size(graph_.adjacency_matrix) - 1), graph(graph_)
 {
     using std::begin, std::end, std::size;
 
@@ -46,7 +44,7 @@ void Simulation::sort()
 void Simulation::eliminate_and_mutate(Terminator &terminator,
                                       Selector   &selector)
 {
-    using std::begin, std::end, std::size;
+    using std::size;
 
     std::vector<size_t> eliminated_indices =
         terminator.generate_eliminations(paths);

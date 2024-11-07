@@ -28,7 +28,7 @@ class Simulation
     std::vector<Path> paths;
     Graph             graph;
 
-    Simulation(Graph graph, size_t size, std::random_device rng_device);
+    Simulation(Graph graph, size_t size, std::random_device::result_type seed);
 
     void step(Terminator &terminator, Selector &selector);
 };
