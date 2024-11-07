@@ -12,7 +12,7 @@ namespace GeneticTSP
 
 std::vector<size_t>
 BestFirstSelection::select_reproduce(const std::vector<Path>   &paths,
-                                     const std::vector<size_t> &to_delete) const
+                                     const std::vector<size_t> &to_delete)
 {
     using std::size;
 
@@ -49,15 +49,16 @@ FitnessUniformSelection::FitnessUniformSelection(
 {
 }
 
-std::vector<size_t> FitnessUniformSelection::select_reproduce(
-    const std::vector<Path> &paths, const std::vector<size_t> &to_delete) const
+std::vector<size_t>
+FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
+                                          const std::vector<size_t> &to_delete)
 {
     using std::begin, std::end, std::size;
 
-    std::vector<std::pair<int, int>> survivor_data(size(paths) -
-                                                   size(to_delete));
-    std::vector<bool>                deleted_lookup(size(paths), false);
-    std::vector<size_t>              to_reproduce;
+    std::vector<std::pair<Path::weight_type, size_t>> survivor_data(
+        size(paths) - size(to_delete));
+    std::vector<bool>   deleted_lookup(size(paths), false);
+    std::vector<size_t> to_reproduce;
 
     for (const auto ele : to_delete)
     {
@@ -83,7 +84,7 @@ std::vector<size_t> FitnessUniformSelection::select_reproduce(
 
     for (size_t i = 0; i < size(to_delete); i++)
     {
-        const std::pair<size_t, Path::weight_type> to_find =
+        std::pair<Path::weight_type, size_t> to_find =
             std::make_pair(distribution(rng_engine), 0);
 
         const auto found_lower_bound =

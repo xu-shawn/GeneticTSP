@@ -29,7 +29,7 @@ Simulation::Simulation(Graph graph_, size_t sim_size, std::random_device device)
     std::vector<size_t> path_data(size(graph.adjacency_matrix));
     std::iota(begin(path_data), end(path_data), 0);
 
-    for (int i = 0; i < sim_size; i++)
+    for (size_t i = 0; i < sim_size; i++)
     {
         std::shuffle(begin(path_data), end(path_data), gen);
         paths.emplace_back(graph, path_data);
@@ -55,7 +55,7 @@ void Simulation::eliminate_and_mutate(Terminator &terminator,
 
     assert(size(eliminated_indices) == size(reproducing_indices));
 
-    for (int i = 0; i < size(eliminated_indices); i++)
+    for (size_t i = 0; i < size(eliminated_indices); i++)
     {
         paths[eliminated_indices[i]] = Path(paths[reproducing_indices[i]]);
         mutate_path(paths[eliminated_indices[i]]);

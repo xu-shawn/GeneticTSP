@@ -88,7 +88,7 @@ std::string Path::to_string()
 
     std::stringstream ss;
 
-    for (int i = 0; i < size(path); i++)
+    for (size_t i = 0; i < size(path); i++)
     {
         ss << path[i];
 
