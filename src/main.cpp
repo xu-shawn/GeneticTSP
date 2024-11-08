@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                         << std::endl;
         }
 
-        simulation.step(*terminator_fpd, *selector_bfs, *mutator_swap);
+        simulation.step(*terminator_fpd, *selector_bfs, *mutator_range_reverse);
     }
 
     return 0;
