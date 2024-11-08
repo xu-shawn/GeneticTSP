@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -5,6 +6,7 @@
 #include <memory>
 #include <random>
 
+#include "mutator.hpp"
 #include "parse.hpp"
 #include "selector.hpp"
 #include "simulation.hpp"
@@ -38,25 +40,32 @@ int main(int argc, char *argv[])
     std::unique_ptr<Selector> selector_FUSS =
         std::make_unique<FitnessUniformSelection>(42);
 
+    std::unique_ptr<Mutator> mutator_swap = std::make_unique<EdgeSwap>(42);
+    std::unique_ptr<Mutator> mutator_range_reverse =
+        std::make_unique<RangeReverse>(42);
+
     Path::weight_type last_weight = simulation.paths[0].total_weight();
     Path::weight_type curr_weight;
 
-    for (int i = 0;; i++)
+    for (int generation = 0;; generation++)
     {
-        curr_weight = simulation.paths[0].total_weight();
+        curr_weight =
+            std::min_element(begin(simulation.paths), end(simulation.paths))
+                ->total_weight();
 
         if (curr_weight != last_weight)
         {
             last_weight = curr_weight;
-            std::cout << curr_weight << std::endl;
+            std::cout << "Generation: " << generation
+                      << ", Best: " << curr_weight << std::endl;
 
-            file_output << "Generation: " << i << ", Weight: " << curr_weight
-                        << "\n"
+            file_output << "Generation: " << generation
+                        << ", Weight: " << curr_weight << "\n"
                         << simulation.paths[0].to_string() << "\n"
                         << std::endl;
         }
 
-        simulation.step(*terminator_FUSS, *selector_FUSS);
+        simulation.step(*terminator_fpd, *selector_bfs, *mutator_swap);
     }
 
     return 0;

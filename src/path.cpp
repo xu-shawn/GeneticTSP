@@ -66,7 +66,7 @@ void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
     std::swap(path[edge1], path[edge2]);
 
     for (size_t i = std::max<size_t>(edge1 - 1, 0);
-         i < std::min<size_t>(edge1, size(path) - 2); i++)
+         i <= std::min<size_t>(edge1, size(path) - 2); i++)
     {
         total_weight_ -= weights[i];
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
@@ -74,7 +74,30 @@ void Path::swap_edges(const Graph &graph, size_t edge1, size_t edge2)
     }
 
     for (size_t i = std::max<size_t>(edge2 - 1, 0);
-         i < std::min<size_t>(edge2, size(path) - 2); i++)
+         i <= std::min<size_t>(edge2, size(path) - 2); i++)
+    {
+        total_weight_ -= weights[i];
+        weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];
+        total_weight_ += weights[i];
+    }
+}
+
+void Path::reverse_range(const Graph &graph, size_t edge1, size_t edge2)
+{
+    using std::begin, std::size;
+
+    if (edge1 > edge2)
+    {
+        std::swap(edge1, edge2);
+    }
+
+    assert(edge1 >= 0 && edge2 >= 0);
+    assert(edge1 < size(path) && edge2 < size(path));
+
+    std::reverse(begin(path) + edge1, begin(path) + edge2);
+
+    for (size_t i = std::max<size_t>(edge1 - 1, 0);
+         i < std::min<size_t>(edge2, size(path) - 1); i++)
     {
         total_weight_ -= weights[i];
         weights[i] = graph.adjacency_matrix[path[i]][path[i + 1]];

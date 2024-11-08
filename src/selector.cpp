@@ -56,10 +56,11 @@ FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
 {
     using std::begin, std::end, std::size;
 
-    std::vector<std::pair<Path::weight_type, size_t>> survivor_data(
-        size(paths) - size(to_delete));
+    std::vector<std::pair<Path::weight_type, size_t>> survivor_data;
     std::vector<bool>   deleted_lookup(size(paths), false);
     std::vector<size_t> to_reproduce(size(to_delete));
+
+    survivor_data.reserve(size(paths) - size(to_delete));
 
     for (const auto ele : to_delete)
     {
@@ -73,7 +74,7 @@ FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
             continue;
         }
 
-        survivor_data[i] = std::make_pair(paths[i].total_weight(), i);
+        survivor_data.emplace_back(paths[i].total_weight(), i);
     }
 
     std::sort(begin(survivor_data), end(survivor_data));
@@ -81,7 +82,8 @@ FitnessUniformSelection::select_reproduce(const std::vector<Path>   &paths,
     const Path::weight_type min_weight = survivor_data.front().first;
     const Path::weight_type max_weight = survivor_data.back().first;
 
-    distribution_type distribution(min_weight, max_weight);
+    distribution_type distribution(min_weight - (max_weight - min_weight) / 10,
+                                   max_weight);
 
     for (size_t i = 0; i < size(to_delete); i++)
     {

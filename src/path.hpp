@@ -28,7 +28,9 @@ class Path
     Path(const Path &other_path);
 
     void        swap_edges(const Graph &graph, size_t edge1, size_t edge2);
+    void        reverse_range(const Graph &graph, size_t edge1, size_t edge2);
     std::string to_string();
+
     weight_type total_weight() const
     {
         return total_weight_;

@@ -11,5 +11,5 @@ SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SOURCE_FILES src/path.cpp src/graph.cpp src/simulation.cpp src/parse.cpp src/selector.cpp src/terminator.cpp src/main.cpp)
+set(SOURCE_FILES src/path.cpp src/graph.cpp src/simulation.cpp src/parse.cpp src/selector.cpp src/terminator.cpp src/mutator.cpp src/main.cpp)
 add_executable(GeneticTSP ${SOURCE_FILES})
